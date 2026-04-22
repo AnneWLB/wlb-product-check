@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WLB Product Check – Anne-Kathrin Marx</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Montserrat', sans-serif; background: #0a0a0a; color: #e8e8e8; min-height: 100vh; padding-bottom: 80px; }
+:root {
+  --card: #16103a; --border: rgba(140,80,220,0.28);
+  --purple: #7c3aed; --pl: #a78bfa;
+  --red: #dc2626; --rh: #ef4444;
+  --white: #f0f0f0; --muted: #c8c8c8; --dim: #888; --dim2: #555; --ibg: #0c0820;
+}
+.wrap { max-width: 600px; margin: 0 auto; padding: 0 20px; }
+.header { text-align: center; padding: 52px 24px 36px; }
+.badge { display:inline-block;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);background:var(--card);border:1px solid var(--border);padding:5px 16px;border-radius:20px;margin-bottom:22px; }
+.header h1 { font-size:clamp(24px,5vw,46px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;color:var(--white);margin-bottom:12px; }
+.header h1 .red { color:var(--red); }
+.header p { font-size:13px;color:var(--dim);line-height:1.8;max-width:420px;margin:0 auto; }
+.card { background:var(--card);border:1px solid var(--border);border-radius:14px;padding:26px;margin-bottom:12px; }
+.card-title { font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--pl);margin-bottom:20px;display:flex;align-items:center;gap:8px; }
+.card-title::before { content:'';display:inline-block;width:14px;height:2px;background:var(--purple);border-radius:1px; }
+.field { margin-bottom:18px; }
+.field:last-child { margin-bottom:0; }
+.fl { display:block;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:8px; }
+textarea, input[type="text"], select {
+  width:100%;padding:12px 14px;background:var(--ibg);
+  border:1px solid rgba(140,80,220,0.2);border-radius:8px;
+  font-family:'Montserrat',sans-serif;font-size:13px;color:var(--white);
+  outline:none;transition:border .2s;line-height:1.5;
+}
+textarea { resize:vertical;min-height:72px; }
+textarea:focus,input:focus,select:focus { border-color:var(--purple); }
+textarea::placeholder,input::placeholder { color:#2a2040; }
+select option { background:#16103a;color:var(--white); }
+.field-row { display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px; }
+.chip-wrap { display:flex;flex-wrap:wrap;gap:8px; }
+.chip { padding:7px 14px;background:var(--ibg);border:1px solid rgba(140,80,220,0.2);border-radius:20px;cursor:pointer;font-size:12px;font-weight:500;color:var(--dim);transition:all .15s;user-select:none;white-space:nowrap; }
+.chip:hover { border-color:var(--purple);color:var(--muted); }
+.chip.on { border-color:var(--red);background:rgba(220,38,38,.12);color:var(--white);font-weight:600; }
+.role-grid { display:grid;grid-template-columns:1fr 1fr;gap:8px; }
+.role-item { padding:12px 14px;background:var(--ibg);border:1px solid rgba(140,80,220,0.2);border-radius:10px;cursor:pointer;user-select:none;transition:all .15s; }
+.role-item:hover,.role-item.on { border-color:var(--purple);background:rgba(124,58,237,.15); }
+.role-item .rt { font-size:12px;font-weight:700;color:var(--white);margin-bottom:3px; }
+.role-item.on .rt { color:var(--pl); }
+.role-item .rd { font-size:11px;color:var(--dim);line-height:1.4; }
+.toggle-row { display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 0;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.05); }
+.toggle-row:last-child { border-bottom:none;padding-bottom:0; }
+.tl { font-size:13px;font-weight:600;color:var(--muted); }
+.ts { font-size:11px;color:var(--dim);margin-top:3px; }
+.t-sw { width:44px;height:24px;background:#1f1535;border:1px solid var(--border);border-radius:12px;position:relative;flex-shrink:0;transition:background .2s; }
+.t-sw.on { background:var(--red);border-color:var(--red); }
+.t-knob { position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:left .2s; }
+.t-sw.on .t-knob { left:23px; }
+.btn-red { display:block;width:100%;background:var(--red);color:#fff;border:none;border-radius:8px;padding:16px 32px;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;transition:background .2s,transform .1s;margin-bottom:12px; }
+.btn-red:hover:not(:disabled) { background:var(--rh);transform:translateY(-1px); }
+.btn-red:disabled { opacity:.3;cursor:not-allowed;transform:none; }
+#loading { display:none;text-align:center;padding:32px 0; }
+#loading.on { display:block; }
+.spin { width:44px;height:44px;margin:0 auto 14px;border:3px solid rgba(124,58,237,.15);border-top-color:var(--red);border-radius:50%;animation:spin .8s linear infinite; }
+@keyframes spin{to{transform:rotate(360deg);}}
+#err { display:none;margin-top:12px;padding:14px;border-radius:8px;background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.3);font-size:12px;color:#f87171;line-height:1.6; }
+#err.on { display:block; }
+#results { display:none;margin-top:20px; }
+#results.on { display:block;animation:fadeUp .5s ease; }
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.ring-box { position:relative;width:152px;height:152px;margin:0 auto 20px; }
+.ring-svg { transform:rotate(-90deg);display:block; }
+.ring-track { fill:none;stroke:rgba(255,255,255,.06);stroke-width:10; }
+.ring-prog { fill:none;stroke-width:10;stroke-linecap:round;stroke-dasharray:415;stroke-dashoffset:415;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1); }
+.ring-inner { position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center; }
+.crit-row { border-bottom:1px solid rgba(255,255,255,.05);padding:16px 0; }
+.crit-row:last-child { border-bottom:none;padding-bottom:0; }
+.crit-top { display:flex;justify-content:space-between;align-items:center;gap:12px; }
+.crit-ic { width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center; }
+.crit-ic.pass { background:var(--red); }
+.crit-ic.fail { border:1.5px solid rgba(255,255,255,.12); }
+.opt-box { background:rgba(220,38,38,.06);border-left:2px solid var(--red);padding:10px 14px;border-radius:0 6px 6px 0;font-size:12px;color:var(--muted);line-height:1.7;margin-top:8px; }
+.opt-lbl { font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--red);margin-bottom:5px; }
+.name-chip { display:inline-block;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.4);border-radius:6px;padding:9px 15px;font-size:13px;font-weight:600;color:var(--white);margin:4px 4px 4px 0;cursor:pointer;transition:all .15s; }
+.name-chip:hover { background:rgba(220,38,38,.15);border-color:var(--red); }
+.strat-box { background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.2);border-radius:10px;padding:16px; }
+.cta-box { background:linear-gradient(135deg,#0f0518 0%,#1a0610 100%);border:1px solid rgba(220,38,38,.2);border-radius:14px;padding:32px 24px;text-align:center;margin-bottom:12px; }
+.cta-box h3 { font-size:18px;font-weight:800;color:var(--white);margin-bottom:8px; }
+.cta-box p { font-size:12px;color:var(--dim);line-height:1.8;margin-bottom:22px; }
+.btn-ghost { background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:12px 24px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.05em;text-transform:uppercase; }
+.btn-ghost:hover { border-color:var(--red);color:var(--red); }
+@media(max-width:420px){.role-grid,.field-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">WLB · Anne-Kathrin Marx</div>
+  <h1>Hat dein Produkt<br /><span class="red">wirklich Substanz?</span></h1>
+  <p>Füll das aus. Ich analysiere deine Idee —<br />direkt, ehrlich, ohne Weichspüler.</p>
+</div>
+
+<div class="wrap">
+
+  <div class="card">
+    <div class="card-title">Dein Produkt</div>
+    <div class="field">
+      <label class="fl">Produktidee — was löst es, für wen, wie?</label>
+      <textarea id="f-idee" placeholder="z.B. Ein Step-by-Step Guide wie ich in 24h ein digitales Mini-Produkt erstelle das sich direkt verkauft — für Frauen die anfangen wollen aber nie fertig werden." rows="3"></textarea>
+    </div>
+    <div class="field">
+      <label class="fl">Produkttitel</label>
+      <input type="text" id="f-titel" placeholder="z.B. Done in a Day" />
+    </div>
+    <div class="field-row">
+      <div>
+        <label class="fl">Normalpreis</label>
+        <input type="text" id="f-preis" placeholder="z.B. €47" />
+      </div>
+      <div>
+        <label class="fl">Launchpreis <span style="font-weight:400;color:var(--dim2);">(optional)</span></label>
+        <input type="text" id="f-launchp" placeholder="z.B. €27" />
+      </div>
+    </div>
+    <div class="field" style="margin-top:6px;">
+      <label class="fl">Format & Inhalte</label>
+      <div class="chip-wrap" id="fmt-chips"></div>
+      <div style="margin-top:10px;"><input type="text" id="f-sonstiges" placeholder="Weitere Details (optional)" /></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Markt & Produktrolle</div>
+    <div class="field">
+      <label class="fl">Deine Zielgruppe</label>
+      <input type="text" id="f-ziel" placeholder="z.B. Selbstständige Frauen die ihr erstes digitales Produkt launchen wollen" />
+    </div>
+    <div class="field">
+      <label class="fl">Nachfragebeweis</label>
+      <textarea id="f-nachfrage" placeholder="z.B. Täglich danach gefragt / 3 Vorverkäufe / sehe es ständig in DMs" rows="2" style="min-height:58px;"></textarea>
+    </div>
+    <div class="field">
+      <label class="fl">Rolle dieses Produkts in deinem System</label>
+      <div class="role-grid" id="role-grid"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Vertrieb & Launch</div>
+    <div class="field">
+      <label class="fl">Auf welchem Kanal wird es verkauft?</label>
+      <div class="chip-wrap" id="kanal-chips"></div>
+    </div>
+    <div class="field">
+      <label class="fl">Wie wird es beworben?</label>
+      <div class="chip-wrap" id="promo-chips"></div>
+    </div>
+    <div class="field">
+      <label class="fl">Gibt es ein Upsell oder Folgeprodukt?</label>
+      <input type="text" id="f-upsell" placeholder="z.B. 8-Wochen Mentoring / nein, das ist das Einzige" />
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Extras</div>
+    <div class="toggle-row" onclick="tog('namen')">
+      <div><div class="tl">Titelvorschläge gewünscht?</div><div class="ts">3 stärkere Alternativen für deinen Produktnamen</div></div>
+      <div class="t-sw" id="sw-namen"><div class="t-knob"></div></div>
+    </div>
+    <div class="toggle-row" onclick="tog('strategie')">
+      <div><div class="tl">Launch-Strategie einschätzen?</div><div class="ts">Ich bewerte ob Kanal + Bewerbung zum Produkt passen</div></div>
+      <div class="t-sw" id="sw-strategie"><div class="t-knob"></div></div>
+    </div>
+    <div class="toggle-row" onclick="tog('streng')">
+      <div><div class="tl">Extra-schonungslos?</div><div class="ts">Kein Weichspüler — auch wenn es wehtut</div></div>
+      <div class="t-sw" id="sw-streng"><div class="t-knob"></div></div>
+    </div>
+  </div>
+
+  <button class="btn-red" id="check-btn" onclick="runCheck()">Jetzt analysieren →</button>
+
+  <div id="loading">
+    <div class="spin"></div>
+    <div style="font-size:12px;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;">Anne analysiert…</div>
+    <div style="font-size:11px;color:var(--dim2);margin-top:6px;">Das dauert 10–20 Sekunden</div>
+  </div>
+  <div id="err"></div>
+
+  <div id="results">
+    <div class="card">
+      <div style="text-align:center;padding:36px 24px;">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pl);margin-bottom:20px;">Dein Produkt-Score</div>
+        <div class="ring-box">
+          <svg class="ring-svg" width="152" height="152" viewBox="0 0 152 152">
+            <circle class="ring-track" cx="76" cy="76" r="66"/>
+            <circle class="ring-prog" id="ring-p" cx="76" cy="76" r="66"/>
+          </svg>
+          <div class="ring-inner">
+            <div id="score-num" style="font-size:50px;font-weight:800;line-height:1;letter-spacing:-2px;">–</div>
+            <div style="font-size:13px;color:var(--dim);margin-top:2px;">/ 100</div>
+          </div>
+        </div>
+        <div id="score-label" style="font-size:20px;font-weight:800;color:var(--white);letter-spacing:-.5px;margin-bottom:6px;"></div>
+        <div id="score-sub" style="font-size:12px;color:var(--muted);line-height:1.6;max-width:320px;margin:0 auto;"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:var(--red);"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pl);">Die 6 Kriterien im Check</div>
+      </div>
+      <div id="kriterien"></div>
+    </div>
+    <div class="card" id="strat-card" style="display:none;">
+      <div class="card-title">Launch-Strategie Check</div>
+      <div class="strat-box">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pl);margin-bottom:8px;">Einschätzung</div>
+        <div id="strat-text" style="font-size:12px;color:var(--muted);line-height:1.75;"></div>
+      </div>
+    </div>
+    <div class="card" id="namen-card" style="display:none;">
+      <div class="card-title">3 stärkere Titel-Alternativen</div>
+      <div id="namen-list"></div>
+      <div style="font-size:11px;color:var(--dim2);margin-top:10px;">Auf Namen klicken zum Kopieren</div>
+    </div>
+    <div class="cta-box">
+      <h3>Du willst das jetzt wirklich umsetzen?</h3>
+      <p>Schreib mir <strong style="color:var(--white);">RESET</strong> oder <strong style="color:var(--white);">BUNDLE</strong> auf Instagram —<br />ich schicke dir direkt die nächsten Schritte.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a href="https://instagram.com/work.life.business_" target="_blank" class="btn-red" style="text-decoration:none;display:inline-block;padding:12px 24px;font-size:12px;margin-bottom:0;">@work.life.business_ →</a>
+        <button class="btn-ghost" onclick="resetForm()">Neue Analyse</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const FMT=["PDF Guide","Video-Kurs","Audio","Notion Template","Workbook","Checkliste","Swipe-Files","Prompts","Template-Bundle","Masterclass"];
+const ROLLEN=[{id:"mini",t:"Mini-Produkt",d:"Niedriger Einstieg"},{id:"haupt",t:"Hauptprodukt",d:"Dein zentrales Angebot"},{id:"upsell",t:"Upsell",d:"Ergänzt günstigeres Angebot"},{id:"freebie",t:"Freebie",d:"Kostenlos, Listenaufbau"},{id:"lead",t:"Lead Magnet",d:"Gratisinhalt → Warm-up"},{id:"tripwire",t:"Tripwire",d:"€5–17, nach Opt-in"}];
+const KANALE=["Instagram","Newsletter","TikTok","LinkedIn","Website","Podcast","Andere"];
+const PROMOS=["Reels","Stories","Organische Posts","E-Mail-Sequenz","Meta Ads","Webinar","DM-Automation","Affiliate"];
+let sF=[],sK=[],sP=[],sR=null,tS={namen:false,strategie:false,streng:false};
+
+function buildChips(id,items,arr){
+  const el=document.getElementById(id);
+  items.forEach(item=>{
+    const c=document.createElement('div');
+    c.className='chip';c.textContent=item;
+    c.onclick=()=>{const i=arr.indexOf(item);if(i>-1){arr.splice(i,1);c.classList.remove('on');}else{arr.push(item);c.classList.add('on');}};
+    el.appendChild(c);
+  });
+}
+function buildRoles(){
+  const g=document.getElementById('role-grid');
+  ROLLEN.forEach(r=>{
+    const d=document.createElement('div');d.className='role-item';
+    d.innerHTML=`<div class="rt">${r.t}</div><div class="rd">${r.d}</div>`;
+    d.onclick=()=>{document.querySelectorAll('.role-item').forEach(x=>x.classList.remove('on'));d.classList.add('on');sR=r.id;};
+    g.appendChild(d);
+  });
+}
+function tog(k){tS[k]=!tS[k];document.getElementById('sw-'+k).classList.toggle('on',tS[k]);}
+function meta(s){
+  if(s>=85)return{l:"Verkauf es. Jetzt.",s:"Das hat Substanz. Nicht warten.",c:"#22c55e"};
+  if(s>=70)return{l:"Gute Basis. Braucht Schärfe.",s:"Solides Fundament — aber zu generisch für einen echten Banger.",c:"#eab308"};
+  if(s>=50)return{l:"Potenzial ja. Klarheit nein.",s:"Die Idee lebt — aber die Positionierung tötet sie gerade.",c:"#f97316"};
+  return{l:"Noch nicht bereit.",s:"Nicht das Produkt ist das Problem. Die Entscheidung fehlt.",c:"#ef4444"};
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  buildChips('fmt-chips',FMT,sF);
+  buildChips('kanal-chips',KANALE,sK);
+  buildChips('promo-chips',PROMOS,sP);
+  buildRoles();
+});
+
+async function runCheck(){
+  const idee=document.getElementById('f-idee').value.trim();
+  const titel=document.getElementById('f-titel').value.trim();
+  if(!idee||!titel){alert('Bitte Produktidee und Titel ausfüllen.');return;}
+  document.getElementById('check-btn').disabled=true;
+  document.getElementById('loading').classList.add('on');
+  document.getElementById('results').classList.remove('on');
+  document.getElementById('err').classList.remove('on');
+
+  const rolleLabel=sR?ROLLEN.find(r=>r.id===sR)?.t:'keine Angabe';
+  const sys=`Du bist Anne – Business Mentorin für Frauen (Marke: WLB). Du bewertest digitale Produkte ${tS.streng?'ABSOLUT schonungslos':'direkt und ehrlich'}. Kein Coaching-Blubber. Du-Sprache. Kurze klare Sätze.
+
+Bewerte nach EXAKT diesen 6 Kriterien:
+1. Problem-Spezifität — Ist das Problem so konkret dass jemand denkt: "Das bin ich."?
+2. Messbare Transformation — Kann die Käuferin das Ergebnis wirklich greifen?
+3. Zielgruppen-Schärfe — Würde sich jemand beim Lesen sofort erkennen?
+4. Stopp-Faktor — Stoppt der Titel beim Scrollen?
+5. Preis-Wert-Realität — Rechtfertigt die Transformation den Preis?
+6. Nachfrage-Substanz — Echte Belege oder Wunschdenken?
+
+Punkte: 1-4 je max 18 Pkt, 5-6 je max 14 Pkt. Max 100. Vergib REALISTISCH.
+${tS.strategie?'Analysiere Launch-Strategie in "strategie_analyse".':''}
+${tS.namen?'3 Produktnamen in "namensvorschlaege".':''}
+
+Antworte NUR mit gültigem JSON:
+{"score":<n>,"kriterien":[{"name":"<n>","punkte":<n>,"bestanden":<bool>,"feedback":"<txt>","optimierung":"<txt>"}]${tS.strategie?',"strategie_analyse":"<txt>"':''}${tS.namen?',"namensvorschlaege":["","",""]':''}}`;
+
+  const usr=`Produktidee: ${idee}\nTitel: ${titel}\nNormalpreis: ${document.getElementById('f-preis').value||'k.A.'}\nLaunchpreis: ${document.getElementById('f-launchp').value||'keiner'}\nFormat: ${[...sF,document.getElementById('f-sonstiges').value].filter(Boolean).join(', ')||'k.A.'}\nZielgruppe: ${document.getElementById('f-ziel').value||'k.A.'}\nNachfrage: ${document.getElementById('f-nachfrage').value||'k.A.'}\nRolle: ${rolleLabel}\nKanal: ${sK.join(', ')||'k.A.'}\nBewerbung: ${sP.join(', ')||'k.A.'}\nUpsell: ${document.getElementById('f-upsell').value||'k.A.'}`;
+
+  try{
+    const res=await fetch('/api/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1600,system:sys,messages:[{role:'user',content:usr}]})});
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||`Fehler ${res.status}`);}
+    const data=await res.json();
+    const raw=data.content?.map(b=>b.text||'').join('')||'';
+    const json=JSON.parse(raw.replace(/```json|```/g,'').trim());
+    render(json);
+  }catch(e){
+    const eb=document.getElementById('err');eb.textContent='Fehler: '+(e.message||'Unbekannter Fehler.');eb.classList.add('on');
+  }finally{
+    document.getElementById('loading').classList.remove('on');
+    document.getElementById('check-btn').disabled=false;
+  }
+}
+
+function render(data){
+  const m=meta(data.score);
+  document.getElementById('score-num').textContent=data.score;
+  document.getElementById('score-num').style.color=m.c;
+  document.getElementById('score-label').textContent=m.l;
+  document.getElementById('score-sub').textContent=m.s;
+  const circ=2*Math.PI*66;
+  const p=document.getElementById('ring-p');
+  p.style.stroke=m.c;p.style.strokeDasharray=circ;
+  setTimeout(()=>{p.style.strokeDashoffset=circ*(1-data.score/100);},120);
+
+  const list=document.getElementById('kriterien');list.innerHTML='';
+  data.kriterien.forEach((k,i)=>{
+    const d=document.createElement('div');d.className='crit-row';
+    if(i===data.kriterien.length-1)d.style.borderBottom='none';
+    d.innerHTML=`<div class="crit-top"><div style="display:flex;align-items:center;gap:10px;"><div class="crit-ic ${k.bestanden?'pass':'fail'}">${k.bestanden?'<svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>':'<div style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.12)"></div>'}</div><span style="font-size:13px;font-weight:700;color:#f0f0f0;">${k.name}</span></div><span style="font-size:11px;font-weight:700;color:var(--red);flex-shrink:0;">${k.punkte} Pkt</span></div><div style="margin-left:32px;margin-top:8px;"><div style="font-size:12px;color:#c8c8c8;line-height:1.7;margin-bottom:8px;">${k.feedback}</div><div class="opt-box"><div class="opt-lbl">So optimierst du das</div>${k.optimierung}</div></div>`;
+    list.appendChild(d);
+  });
+
+  if(data.strategie_analyse){document.getElementById('strat-text').textContent=data.strategie_analyse;document.getElementById('strat-card').style.display='block';}
+  else document.getElementById('strat-card').style.display='none';
+
+  if(data.namensvorschlaege?.length){
+    const nl=document.getElementById('namen-list');nl.innerHTML='';
+    data.namensvorschlaege.forEach(n=>{
+      const c=document.createElement('span');c.className='name-chip';c.textContent=n;
+      c.onclick=()=>{navigator.clipboard?.writeText(n);const o=c.textContent;c.textContent='✓ Kopiert!';setTimeout(()=>c.textContent=o,1500);};
+      nl.appendChild(c);
+    });
+    document.getElementById('namen-card').style.display='block';
+  }else document.getElementById('namen-card').style.display='none';
+
+  document.getElementById('results').classList.add('on');
+  setTimeout(()=>document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'}),150);
+}
+
+function resetForm(){
+  ['f-idee','f-titel','f-preis','f-launchp','f-sonstiges','f-ziel','f-nachfrage','f-upsell'].forEach(id=>document.getElementById(id).value='');
+  sF.length=0;sK.length=0;sP.length=0;sR=null;
+  document.querySelectorAll('.chip.on').forEach(el=>el.classList.remove('on'));
+  document.querySelectorAll('.role-item.on').forEach(el=>el.classList.remove('on'));
+  document.getElementById('results').classList.remove('on');
+  document.getElementById('err').classList.remove('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
