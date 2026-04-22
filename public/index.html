@@ -297,7 +297,7 @@ Punkte: 1-4 je max 18 Pkt, 5-6 je max 14 Pkt. Max 100. Vergib REALISTISCH.
 ${tS.strategie?'Analysiere Launch-Strategie in "strategie_analyse".':''}
 ${tS.namen?'3 Produktnamen in "namensvorschlaege".':''}
 
-Antworte NUR mit gültigem JSON:
+Antworte AUSSCHLIESSLICH mit einem einzigen JSON-Objekt. Kein Text davor, kein Text danach, keine Backticks, kein Markdown:
 {"score":<n>,"kriterien":[{"name":"<n>","punkte":<n>,"bestanden":<bool>,"feedback":"<txt>","optimierung":"<txt>"}]${tS.strategie?',"strategie_analyse":"<txt>"':''}${tS.namen?',"namensvorschlaege":["","",""]':''}}`;
 
   const usr=`Produktidee: ${idee}\nTitel: ${titel}\nNormalpreis: ${document.getElementById('f-preis').value||'k.A.'}\nLaunchpreis: ${document.getElementById('f-launchp').value||'keiner'}\nFormat: ${[...sF,document.getElementById('f-sonstiges').value].filter(Boolean).join(', ')||'k.A.'}\nZielgruppe: ${document.getElementById('f-ziel').value||'k.A.'}\nNachfrage: ${document.getElementById('f-nachfrage').value||'k.A.'}\nRolle: ${rolleLabel}\nKanal: ${sK.join(', ')||'k.A.'}\nBewerbung: ${sP.join(', ')||'k.A.'}\nUpsell: ${document.getElementById('f-upsell').value||'k.A.'}`;
