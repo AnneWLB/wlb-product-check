@@ -309,6 +309,7 @@ Antworte AUSSCHLIESSLICH mit einem einzigen JSON-Objekt. Kein Text davor, kein T
     const raw=data.content?.map(b=>b.text||'').join('')||'';
 const start=raw.indexOf('{');
 const end=raw.lastIndexOf('}');
+if(start===-1||end===-1)throw new Error('Kein JSON gefunden');
 const json=JSON.parse(raw.slice(start,end+1));
     render(json);
   }catch(e){
