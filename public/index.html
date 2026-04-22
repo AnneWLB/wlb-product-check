@@ -307,7 +307,8 @@ Antworte NUR mit gültigem JSON:
     if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||`Fehler ${res.status}`);}
     const data=await res.json();
     const raw=data.content?.map(b=>b.text||'').join('')||'';
-    const json=JSON.parse(raw.replace(/```json|```/g,'').trim());
+const cleaned=raw.replace(/^[\s\S]*?(\{)/,'$1').replace(/\}[\s\S]*$/,'}');
+  const json=JSON.parse(cleaned);
     render(json);
   }catch(e){
     const eb=document.getElementById('err');eb.textContent='Fehler: '+(e.message||'Unbekannter Fehler.');eb.classList.add('on');
