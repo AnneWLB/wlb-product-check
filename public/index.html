@@ -303,7 +303,7 @@ Antworte NUR mit gültigem JSON:
   const usr=`Produktidee: ${idee}\nTitel: ${titel}\nNormalpreis: ${document.getElementById('f-preis').value||'k.A.'}\nLaunchpreis: ${document.getElementById('f-launchp').value||'keiner'}\nFormat: ${[...sF,document.getElementById('f-sonstiges').value].filter(Boolean).join(', ')||'k.A.'}\nZielgruppe: ${document.getElementById('f-ziel').value||'k.A.'}\nNachfrage: ${document.getElementById('f-nachfrage').value||'k.A.'}\nRolle: ${rolleLabel}\nKanal: ${sK.join(', ')||'k.A.'}\nBewerbung: ${sP.join(', ')||'k.A.'}\nUpsell: ${document.getElementById('f-upsell').value||'k.A.'}`;
 
   try{
-    const res=await fetch('/api/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1600,system:sys,messages:[{role:'user',content:usr}]})});
+    const res=await fetch('/api/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:1600,system:sys,messages:[{role:'user',content:usr}]})});
     if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||`Fehler ${res.status}`);}
     const data=await res.json();
     const raw=data.content?.map(b=>b.text||'').join('')||'';
