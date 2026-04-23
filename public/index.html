@@ -82,7 +82,7 @@ nav {
 .form-block { padding: 2rem 0; border-bottom: 1px solid var(--border); }
 .form-block:last-of-type { border-bottom: none; }
 .block-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.6rem; }
-.block-num { font-family: var(--f-d); font-size: .7rem; font-style: italic; color: var(--red); letter-spacing: .1em; }
+.block-num { font-family: var(--f-d); font-size: .7rem; font-style: italic; color: var(--red2); letter-spacing: .1em; }
 .block-title { font-family: var(--f-d); font-size: .85rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--white); }
 
 /* ── FIELDS ── */
@@ -90,7 +90,7 @@ nav {
 .field:last-child { margin-bottom: 0; }
 .fl {
   display: block; font-size: .62rem; font-weight: 500; letter-spacing: .16em;
-  text-transform: uppercase; color: var(--mid); margin-bottom: .6rem;
+  text-transform: uppercase; color: var(--white); margin-bottom: .6rem;
 }
 textarea, input[type="text"] {
   width: 100%; padding: 11px 14px;
@@ -103,7 +103,7 @@ textarea, input[type="text"] {
 }
 textarea { resize: vertical; min-height: 72px; }
 textarea:focus, input:focus { border-color: rgba(139,26,46,.6); background: rgba(139,26,46,.04); }
-textarea::placeholder, input::placeholder { color: rgba(255,255,255,.12); }
+textarea::placeholder, input::placeholder { color: rgba(255,255,255,.28); }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.4rem; }
 
 /* ── CHIPS ── */
@@ -141,7 +141,7 @@ textarea::placeholder, input::placeholder { color: rgba(255,255,255,.12); }
   border-bottom: 1px solid var(--border);
 }
 .toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
-.tl { font-family: var(--f-d); font-size: .9rem; font-weight: 300; color: var(--light); }
+.tl { font-family: var(--f-d); font-size: .9rem; font-weight: 300; color: var(--white); }
 .ts { font-size: .72rem; color: var(--mid); margin-top: 3px; font-weight: 300; }
 .t-sw {
   width: 44px; height: 24px; background: var(--ink);
@@ -554,9 +554,9 @@ function buildRoles(){
 
 function tog(k){tS[k]=!tS[k];document.getElementById('sw-'+k).classList.toggle('on',tS[k]);}
 function meta(s){
-  if(s>=85)return{l:"Verkauf es. <em>Jetzt.</em>",s:"Das hat Substanz. Nicht warten.",c:"#6b7280"};
-  if(s>=70)return{l:"Gute Basis. Braucht <em>Schärfe.</em>",s:"Solides Fundament — aber zu generisch für einen echten Banger.",c:"#78716c"};
-  if(s>=50)return{l:"Potenzial ja. <em>Klarheit nein.</em>",s:"Die Idee lebt — aber die Positionierung tötet sie gerade.",c:"#8b1a2e"};
+  if(s>=75)return{l:"Verkauf es. <em>Jetzt.</em>",s:"Das hat Substanz. Nicht warten.",c:"#6b7280"};
+  if(s>=58)return{l:"Gute Basis. Braucht <em>Schärfe.</em>",s:"Solides Fundament — aber zu generisch für einen echten Banger.",c:"#78716c"};
+  if(s>=40)return{l:"Potenzial ja. <em>Klarheit nein.</em>",s:"Die Idee lebt — aber die Positionierung tötet sie gerade.",c:"#8b1a2e"};
   return{l:"Noch nicht <em>bereit.</em>",s:"Nicht das Produkt ist das Problem. Die Entscheidung fehlt.",c:"#8b1a2e"};
 }
 
@@ -593,6 +593,7 @@ Bewerte nach EXAKT diesen 6 Kriterien:
 6. Nachfrage-Substanz — Echte Belege oder Wunschdenken?
 
 Punkte: 1-4 je max 18 Pkt, 5-6 je max 14 Pkt. Max 100. Vergib REALISTISCH.
+Wichtig: Vergib mindestens 55 Punkte wenn eine echte Produktidee vorhanden ist und die Kernfelder ausgefüllt sind. Nur unter 40 wenn das Konzept kaum ausgearbeitet ist.
 ${tS.strategie?'Analysiere Launch-Strategie in "strategie_analyse".':''}
 ${tS.namen?'3 Produktnamen in "namensvorschlaege".':''}
 
